@@ -34,16 +34,24 @@ application {
     mainClass.set("h12.Main")
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-}
-
 tasks {
-    withType<JavaCompile> {
-        options.encoding = "UTF-8"
+    val runDir = File("build/run")
+    named<JavaExec>("run") {
+        doFirst {
+            runDir.mkdirs()
+        }
+        workingDir = runDir
     }
     test {
+        doFirst {
+            runDir.mkdirs()
+        }
+        workingDir = runDir
         useJUnitPlatform()
+    }
+    withType<JavaCompile> {
+        options.encoding = "UTF-8"
+        sourceCompatibility = "11"
+        targetCompatibility = "11"
     }
 }
